@@ -130,8 +130,10 @@ function renderFullPage(html, initialState) {
 		<title>Universal Redux Example</title>
 		<link rel="shortcut icon" type="image/png" href="assets/images/react.png">
 		<link rel="stylesheet" href="/assets/css/uikit.almost-flat.min.css">
+		<link rel="stylesheet" href="/assets/css/plottable.css">
 	  </head>
 	  <body>
+      <svg id="tutorial-result">
 	  <div class="container">${html}</div>
 		<script>window.$REDUX_STATE = ${initialState}</script>
 		<script src="/static/bundle.js"></script>
