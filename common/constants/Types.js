@@ -7,7 +7,8 @@ export const SystemState = Immutable.Record({
 })
 
 export const StockState = Immutable.Record({
-		stocksByName: Immutable.List()
+		stocksByName: Immutable.List(),
+		stocksNameList: Immutable.List()
 })
 
 export const StockDailyData = Immutable.Record({

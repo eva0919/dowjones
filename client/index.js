@@ -28,7 +28,8 @@ if ( window.$REDUX_STATE ) {
 	// } );
 
 	state.stockState = new StockState({
-			stocksByName:  state.stockState.stocksByName || []
+			stocksByName:  state.stockState.stocksByName || [],
+			stocksNameList: Immutable.List.of( ...state.stockState.stocksNameList ) || []
 	})
 	state.systemState = new SystemState({
 			SystemState:  false

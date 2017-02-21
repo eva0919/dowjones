@@ -1,6 +1,6 @@
 // for use on server to guarantee data was fetched before rendering pages for user
 export default function fetchComponentData(dispatch, components, params) {
-
+  console.log( params );
   const needs = components.reduce( (prev, current) => {
 
   	return Object.keys(current).reduce( (acc, key) => {

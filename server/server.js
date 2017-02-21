@@ -45,13 +45,23 @@ app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output
 app.use(webpackHotMiddleware(compiler))
 
 app.get('/api/stocks/:name', function(req, res) {
-	let query = "SELECT * FROM dowjones WHERE Name='AAPL'";
+  console.log( req.params );
+	let query = "SELECT * FROM dowjones WHERE Name='"+req.params.name+"' ORDER BY Date";
   // console.log( query );
   pool.query( query, function (error, results, fields) {
        res.status(200).send( JSON.stringify(results) );
   });
 	// res.status(200).send("API Hello");
 });
+app.get('/api/stocks', function(req, res) {
+	let query = "SELECT name FROM dowjones GROUP BY name";
+  // console.log( query );
+  pool.query( query, function (error, results, fields) {
+       res.status(200).send( JSON.stringify(results) );
+  });
+	// res.status(200).send("API Hello");
+});
+
 // server rendering
 app.use( ( req, res, next ) => {
 
@@ -133,7 +143,6 @@ function renderFullPage(html, initialState) {
 		<link rel="stylesheet" href="/assets/css/plottable.css">
 	  </head>
 	  <body>
-      <svg id="tutorial-result">
 	  <div class="container">${html}</div>
 		<script>window.$REDUX_STATE = ${initialState}</script>
 		<script src="/static/bundle.js"></script>
