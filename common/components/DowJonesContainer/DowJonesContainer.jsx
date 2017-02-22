@@ -12,6 +12,12 @@ import Paper from 'material-ui/Paper';
 
 const defaultProps = {
   stockName: 'AAPL',
+  colors: [
+    "#2894FF",
+    "#34b24c",
+    "#ffa500",
+    "#551a8b",
+  ],
 };
 
 class DowJonesContainer extends Component {
@@ -92,8 +98,8 @@ class DowJonesContainer extends Component {
     console.log( this );
 		return (<Paper style={styles.root}zDepth={1} rounded={false} >
               <MenuGroup value={this.state.stock} handleChange={this.handleChange} groupList={stockState.stocksNameList}/>
-              <ToggleGroup handleGroup={this.toggleHandleGroup}/>
-              <PlottableChart dataSet={stockState.stocksByName} filterOption={this.state.toggleOption}/>
+              <ToggleGroup handleGroup={this.toggleHandleGroup} colors={this.props.colors}/>
+              <PlottableChart dataSet={stockState.stocksByName} filterOption={this.state.toggleOption} colors={this.props.colors}/>
             </Paper>
 
   )

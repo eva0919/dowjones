@@ -27,7 +27,7 @@ const finalCreateStore = applyMiddleware(promiseMiddleware)( createStore );
 let pool = mysql.createPool({
     host        : '127.0.0.1',
     user        : 'root',
-    password    : 'mike0919',
+    password    : 'test',
     database    : 'stocks',
 });
 

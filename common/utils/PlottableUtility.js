@@ -29,8 +29,9 @@ export function PlottableChartUtility(Plottable, el, dataSet, filterOption){
         console.log( color );
         let dataset = new Plottable.Dataset(newDataSet, {"color":getColorByIndex(dataSetCount)});
         plot.addDataset(dataset);
-        dataSetCount ++ ;
+
       }
+      dataSetCount ++ ;
     });
     // var dataset = new Plottable.Dataset(dataSet);
     // plot.addDataset(dataset);
