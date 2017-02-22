@@ -15,13 +15,13 @@ class PlottableChart extends Component {
   componentDidMount() {
     if( typeof window !== 'undefined' ){
       console.log("did Mount");
-      PlottableChartUtility(this.Plottable, this.refs.svgDiv, this.props.dataSet, {});
+      PlottableChartUtility(this.Plottable, this.refs.svgDiv, this.props.dataSet, this.props.filterOption);
     }
   }
   componentDidUpdate(prevProps, prevState){
     if( typeof window !== 'undefined' ){
       console.log( "componentDidUpdate" );
-      PlottableChartUtility(this.Plottable, this.refs.svgDiv, this.props.dataSet, {});
+      PlottableChartUtility(this.Plottable, this.refs.svgDiv, this.props.dataSet, this.props.filterOption);
     }
   }
 	render() {

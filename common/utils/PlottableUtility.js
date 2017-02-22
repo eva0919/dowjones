@@ -1,16 +1,11 @@
 import $ from 'jquery';
-
-export function PlottableChartUtility(Plottable, el, dataSet, config={}){
+import _ from 'lodash';
+export function PlottableChartUtility(Plottable, el, dataSet, filterOption){
   if( Plottable ){
-    const width = config.width || "1000px";
-    const height = config.height || "500px";
     const div = d3.select(el);
     const svg = d3.select($('svg', div[0])[0]);
-    // console.log(svg);
     svg.html("");
-    // div.append('svg')
-    //   .attr('width', width)
-    //   .attr('height', height);
+
     var xScale = new Plottable.Scales.Time();
     var yScale = new Plottable.Scales.Linear();
 
@@ -24,17 +19,21 @@ export function PlottableChartUtility(Plottable, el, dataSet, config={}){
       let dateToken = dateString.split("-");
       return new Date(Date.UTC(dateToken[0], parseInt(dateToken[1])-1, dateToken[2]));
     }, xScale);
-    plot.y(function(d) { return d.High; }, yScale);
-
-    // var data = [
-    //   { "x": 0, "y": 1 },
-    //   { "x": 1, "y": 2 },
-    //   { "x": 2, "y": 4 },
-    //   { "x": 3, "y": 8 }
-    // ];
-
-    var dataset = new Plottable.Dataset(dataSet);
-    plot.addDataset(dataset);
+    plot.y(function(d) { return d.value; }, yScale);
+    plot.attr("stroke", function(d, i, ds) { return ds.metadata().color; });
+    var dataSetCount = 0;
+    _.mapKeys(filterOption, (value, key, object) =>{
+      if(value){
+        let newDataSet = createDataSet(dataSet, key);
+        let color = getColorByIndex(dataSetCount);
+        console.log( color );
+        let dataset = new Plottable.Dataset(newDataSet, {"color":getColorByIndex(dataSetCount)});
+        plot.addDataset(dataset);
+        dataSetCount ++ ;
+      }
+    });
+    // var dataset = new Plottable.Dataset(dataSet);
+    // plot.addDataset(dataset);
     var pzi = new Plottable.Interactions.PanZoom(xScale, null);
     pzi.attachTo(plot);
 
@@ -48,6 +47,16 @@ export function PlottableChartUtility(Plottable, el, dataSet, config={}){
     console.log( d3.select($('svg', div[0])[0]) );
     chart.renderTo( d3.select($('svg', div[0])[0]) );
     var crosshair = createCrosshair(plot);
+  }
+  function createDataSet( originDataSet, filterName){
+    var returnDataSet = [];
+    originDataSet.map( data =>{
+      returnDataSet.push({
+        value:data[filterName],
+        Date:data.Date
+      });
+    });
+    return returnDataSet;
   }
   function createCrosshair(plot) {
     var crosshair = {};
@@ -75,5 +84,14 @@ export function PlottableChartUtility(Plottable, el, dataSet, config={}){
       crosshairContainer.style("visibility", "hidden");
     }
     return crosshair;
+  }
+  function getColorByIndex(ind=0){
+    const colors =[
+      "#2894FF",
+      "#34b24c",
+      "#ffa500",
+      "#551a8b",
+    ]
+    return colors[ind];
   }
 }

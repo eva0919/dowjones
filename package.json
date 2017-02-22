@@ -45,6 +45,7 @@
     "history": "^2.1.0",
     "immutable": "^3.8.1",
     "jquery": "^3.1.1",
+    "lodash": "^4.17.4",
     "material-ui": "^0.17.0",
     "mysql": "^2.13.0",
     "plottable": "^2.2.0",

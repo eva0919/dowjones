@@ -7,9 +7,7 @@ import { fetchNeeds } from '../../utils/fetchComponentData';
 import PlottableChart from '../PlottableChart';
 import ToggleGroup from '../ToggleGroup';
 import MenuGroup from '../MenuGroup';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import Toggle from 'material-ui/Toggle';
+import Paper from 'material-ui/Paper';
 // import Plottable from 'plottable'
 
 const defaultProps = {
@@ -24,8 +22,22 @@ class DowJonesContainer extends Component {
 	constructor(props) {
 		super(props);
     this.actions = bindActionCreators(StockActions, props.dispatch);
-    this.state = {stock: this.props.stockName, toggleHigh:false, };
+    this.state = {
+      stock: this.props.stockName,
+      toggleOption:{
+        High: true,
+        Low: false,
+        Open: false,
+        Close: false,
+      }
+    };
     this.handleChange = this.handleChange.bind(this);
+    this.toggleHandleGroup = [
+      this.handleToggleHigh.bind(this),
+      this.handleToggleLow.bind(this),
+      this.handleToggleOpen.bind(this),
+      this.handleToggleClose.bind(this),
+    ]
 	}
   componentDidMount() {
         if( !this.props.stockState ){
@@ -38,26 +50,51 @@ class DowJonesContainer extends Component {
     this.setState({stock}, ()=>{
       this.actions.getStockByName({stockName:this.state.stock});
     })
-  };
+  }
+  handleToggleHigh = (event, isInputChecked) => {
+    this.setState({toggleOption:{
+      ...this.state.toggleOption,
+      High: isInputChecked,
 
+    }});
+  }
+  handleToggleLow = (event, isInputChecked) => {
+    this.setState({toggleOption:{
+      ...this.state.toggleOption,
+      Low: isInputChecked,
+
+    }});
+  }
+  handleToggleOpen = (event, isInputChecked) => {
+    this.setState({toggleOption:{
+      ...this.state.toggleOption,
+      Open: isInputChecked,
+
+    }});
+  }
+  handleToggleClose = (event, isInputChecked) => {
+    this.setState({toggleOption:{
+      ...this.state.toggleOption,
+      Close: isInputChecked,
+
+    }});
+  }
 	render() {
     const {
       stockState
     } = this.props;
     const styles = {
-      toggle:{
-        display:"inline-block",
-        width:"100px"
+      root:{
+        margin:"10px"
       }
 
     }
     console.log( this );
-		return (<div>
+		return (<Paper style={styles.root}zDepth={1} rounded={false} >
               <MenuGroup value={this.state.stock} handleChange={this.handleChange} groupList={stockState.stocksNameList}/>
-              <br />
-              <ToggleGroup />
-              <PlottableChart dataSet={stockState.stocksByName}/>
-            </div>
+              <ToggleGroup handleGroup={this.toggleHandleGroup}/>
+              <PlottableChart dataSet={stockState.stocksByName} filterOption={this.state.toggleOption}/>
+            </Paper>
 
   )
 	}
